@@ -1,0 +1,48 @@
+CREATE DATABASE TARgvMariLT;
+
+
+USE TARgvMariLT;
+CREATE TABLE film(
+filmID int PRIMARY KEY identity(1,1),
+filmNimetus varchar(30) not null,
+aasta int,
+eelarveHind decimal(10,1)
+);
+SELECT * FROM film;
+
+--tabeli kustutamine
+DROP TABLE film;
+
+--andmete sisestamine tabelisse
+INSERT INTO film(filmNimetus, aasta, eelarvehind)
+VALUES('Titanic', 1997, 2000000.5),
+('The Matrix', 1999, 6300000.5),
+('Acatar', 2009, 2370000.5);
+
+CREATE TABLE zanr(
+zanrID int PRIMARY KEY identity(1,1),
+zanrNimetus VARCHAR(20) UNIQUE
+)
+
+INSERT INTO zanr(zanrNimetus)
+VALUES 
+    ('draama'), 
+    ('ulme'), 
+    ('seiklus');
+SELECT * FROM zanr;
+
+--tabeli film struktuuri muutmine --> uue vergu liisamine
+ALTER TABLE film ADD zanrID int;
+SELECT * FROM film;
+
+--tabeli film struktuuri muutmine -->
+--FK lisamine mis on seotud tabeliga zanr(zanrID)
+ALTER TABLE film ADD CONSTRAINT fk_zanr
+FOREIGN KEY (zanrID) REFERENCES zanr(zanrID);
+
+SELECT * from film;
+SELECT * from zanr;
+UPDATE film SET zanrID=2 WHERE filmID=3
+UPDATE film SET zanrID=2 WHERE filmID=2
+UPDATE film SET zanrID=1 WHERE filmID=1
+UPDATE film SET zanrID=3 WHERE filmID=3
