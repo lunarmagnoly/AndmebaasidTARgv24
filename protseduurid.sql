@@ -55,7 +55,7 @@ update uudised set kirjeldus = 'uus kirjeldus'
 where kirjeldus like 'puudub'
 select * from uudised;
 
---protseduur mis uuendab andmed tebelis/UPDATE
+--protseduur mis uuendab andmed tabelis/UPDATE
 
 create procedure uuendaKirjeldus
 @uusKirjeldus text
