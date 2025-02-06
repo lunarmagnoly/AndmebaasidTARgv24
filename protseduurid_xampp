@@ -1,0 +1,80 @@
+CREATE DATABASE procTARgv24;
+USE procTARgv24;
+
+CREATE TABLE uudised(
+    uudisID INT PRIMARY KEY AUTO_INCREMENT,
+    uudisTeema VARCHAR(50),
+    kuupaev DATE,
+    autor VARCHAR(25),
+    kirjeldus TEXT
+);
+
+INSERT INTO uudised (uudisTeema, kuupaev, autor, kirjeldus)
+VALUES ('udune ilm', '2025-02-06', 'postimees', 'Lounani on udune ilm');
+
+--protseduur uue uudise lisamiseks
+
+DELIMITER //
+
+CREATE PROCEDURE lisaUudis (
+    IN uusTeema VARCHAR(50),
+    IN paev DATE,
+    IN autor VARCHAR(20),
+    IN kirjeldus TEXT
+)
+BEGIN
+    INSERT INTO uudised (uudisTeema, kuupaev, autor, kirjeldus)
+    VALUES (uusTeema, paev, autor, kirjeldus);
+    SELECT * FROM uudised;
+END //
+
+--kutse
+
+CALL lisaUudis('1.marts on juba kevad', '2025-02-06', 'test', 'puudub');
+
+--protseduur uudise kustutamiseks
+
+CREATE PROCEDURE kustutaUudis (
+    IN id INT
+)
+BEGIN
+    SELECT * FROM uudised;
+    DELETE FROM uudised WHERE uudisID = id;
+    SELECT * FROM uudised;
+END //
+
+--kutse
+
+CALL kustutaUudis(2);
+
+--protseduur uudise uuendamisele
+
+CREATE PROCEDURE uuendaKirjeldus (
+    IN uusKirjeldus TEXT
+)
+BEGIN
+    SELECT * FROM uudised;
+    UPDATE uudised SET kirjeldus = uusKirjeldus
+    WHERE kirjeldus LIKE 'puudub';
+    SELECT * FROM uudised;
+END //
+
+--kutse
+
+CALL uuendaKirjeldus('uus tekst kirjeldus');
+
+--protseduur uudise 
+
+CREATE PROCEDURE otsingUudiseTeema (
+    IN taht CHAR(1)
+)
+BEGIN
+    SELECT * FROM uudised
+    WHERE uudisTeema LIKE CONCAT(taht, '%');
+END //
+
+DELIMITER ;
+
+
+
+CALL otsingUudiseTeema('u');
