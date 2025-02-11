@@ -27,23 +27,24 @@ DELIMITER ;
 CALL lisaKasutaja('46567890098', '1965-02-06', 'Mingi Nimi');
 
 
-DELIMITER //
+DELIMITER $$
 
 CREATE PROCEDURE uuendaNimi(
-    IN p_vanaNimi VARCHAR(25),
-    IN p_uusNimi VARCHAR(25)
+    IN oldName VARCHAR(255), 
+    IN newName VARCHAR(255)
 )
 BEGIN
-    SELECT * FROM kasutajad WHERE nimi = p_vanaNimi;
-
+   
     UPDATE kasutajad
-    SET nimi = p_uusNimi
-    WHERE nimi = p_vanaNimi;
+    SET nimi = newName
+    WHERE nimi = oldName;
 
-    SELECT * FROM kasutajad WHERE nimi = p_uusNimi;
-END //
+    
+    SELECT * FROM kasutajad WHERE nimi = newName;
+END $$
 
 DELIMITER ;
+
 
 CALL uuendaNimi('Mingi Nimi', 'Uus Nimi');
 
